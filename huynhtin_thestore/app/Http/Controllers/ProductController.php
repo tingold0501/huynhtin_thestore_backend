@@ -15,6 +15,10 @@ class ProductController extends Controller
         $products = Product::all();
         return response()->json($products);
     }
+    public function getProductsLatest(){
+        $products = Product::orderBy('id', 'desc')->take(3)->get();
+        return response()->json($products);
+    }
 
     /**
      * Show the form for creating a new resource.

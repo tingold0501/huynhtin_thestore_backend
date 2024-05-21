@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProductType;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductTypeController extends Controller
@@ -12,7 +13,13 @@ class ProductTypeController extends Controller
      */
     public function index()
     {
-        //
+        $productTypes = ProductType::all();
+        return response()->json($productTypes);
+    }
+
+    public function getProductsByType($id){
+        $products = Product::where('producttype_id', $id)->get();
+        return response()->json($products);
     }
 
     /**
