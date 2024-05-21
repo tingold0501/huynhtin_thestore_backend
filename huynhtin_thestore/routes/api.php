@@ -13,5 +13,5 @@ Route::controller(RoleController::class)->group(function () {
     Route::get('/getRolesNotActive', 'getRolesNotActive');
 });
 Route::controller(ProductController::class)->group(function () {
-    Route::get('/indexproduct', 'index');
+    Route::get('/getallproducts', 'index');
 });
