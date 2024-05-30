@@ -19,7 +19,10 @@ class ProductTypeController extends Controller
 
     public function getProductsByType($id){
         $products = Product::where('producttype_id', $id)->get();
-        return response()->json($products);
+        if($products->isEmpty()){
+            return response()->json(['products' => $products,'check' => 'false','msg' => 'Không tìm thấy sản phẩm']);
+        }
+        return response()->json(['products' => $products, 'check' => 'true','msg'=>'Tìm thấy sản phẩm'], 200);
     }
 
     /**

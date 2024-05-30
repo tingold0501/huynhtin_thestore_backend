@@ -19,7 +19,7 @@ class ProductController extends Controller
         $products = Product::orderBy('id', 'desc')->take(3)->get();
         return response()->json($products);
     }
-
+    
     /**
      * Show the form for creating a new resource.
      */
