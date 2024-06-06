@@ -5,10 +5,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductTypeController;
+use App\Http\Controllers\UserController;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+Route::controller(UserController::class)->group(function () {
+    Route::get('/getUsers', 'getUsers');
+});
 Route::controller(RoleController::class)->group(function () {
     Route::get('/index', 'index');
     Route::get('/getRolesNotActive', 'getRolesNotActive');
