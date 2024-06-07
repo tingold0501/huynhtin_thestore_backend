@@ -12,6 +12,8 @@ Route::get('/user', function (Request $request) {
 
 Route::controller(UserController::class)->group(function () {
     Route::get('/getUsers', 'getUsers');
+    Route::post('/register', 'register');
+    Route::post('/login', 'login');
 });
 Route::controller(RoleController::class)->group(function () {
     Route::get('/index', 'index');

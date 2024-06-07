@@ -9,6 +9,16 @@ use App\Models\User;
 
 class UserController extends Controller 
 {
+    public function register(Request $request, User $user){
+        $validator = \Validator::make($request->all(), [
+            'title' => 'required|unique:posts|max:255',
+            'body' => 'required',
+        ]);
+ 
+        if ($validator->fails()) {
+            return response()->json(['error'=>$validator->errors()], 401);
+        }
+    }
     public function getUsers()
     {
         // $users = User::all();
