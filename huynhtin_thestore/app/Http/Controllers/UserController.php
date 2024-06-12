@@ -21,9 +21,31 @@ class UserController extends Controller
     }
     public function getUsers()
     {
-        // $users = User::all();
-        // return response()->json($users);
-        return "User Controller use Interface UserInterface";
+        $users = User::all();
+        return response()->json($users);
+        // return "User Controller use Interface UserInterface";
+    }
+    public function login(Request $request, User $user){
+        $validator = \Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+ 
+        if ($validator->fails()) {
+            return response()->json(['error'=>$validator->errors()], 401);
+            }
+
+        $user = User::where('email', $request->email)->first();
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json(['message' => 'Login failed'], 401);
+        }
+        $token = $user->createToken('my-app-token')->plainTextToken;
+        $response = [
+            'user' => $user,
+            'token' => $token
+        ];
+        return response()->json($response);
+        
     }
     /**
      * Display a listing of the resource.

@@ -11,7 +11,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::controller(UserController::class)->group(function () {
-    Route::get('/getUsers', 'getUsers');
+    Route::get('/users', 'getUsers');
     Route::post('/register', 'register');
     Route::post('/login', 'login');
 });
@@ -20,7 +20,7 @@ Route::controller(RoleController::class)->group(function () {
     Route::get('/getRolesNotActive', 'getRolesNotActive');
 });
 Route::controller(ProductController::class)->group(function () {
-    Route::get('/getallproducts', 'index');
+    Route::get('/products', 'index');
     Route::get('/getProductsLatest', 'getProductsLatest');
 });
 Route::controller(ProductTypeController::class)->group(function () {
