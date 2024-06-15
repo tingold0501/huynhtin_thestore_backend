@@ -34,6 +34,13 @@ class UserSeeder extends Seeder
             'updated_at' => now(),
             'created_at' => now(),
             'role_id' => 3,],
+            ['name' => 'staff',
+            'email' => 'staff@gmail.com',
+            'phone' => '0981651109',
+            'password' => \Hash::make($value = '123456'),
+            'updated_at' => now(),
+            'created_at' => now(),
+            'role_id' => 3,],
         ]);
     }
 }

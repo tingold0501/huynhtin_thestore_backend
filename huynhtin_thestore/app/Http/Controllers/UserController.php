@@ -21,7 +21,7 @@ class UserController extends Controller
     }
     public function getUsers()
     {
-        $users = User::all();
+        $users = \DB::table('users')->where('status',1)->get();
         return response()->json($users);
         // return "User Controller use Interface UserInterface";
     }
@@ -29,6 +29,10 @@ class UserController extends Controller
         $validator = \Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required',
+        ],[
+            'email.required' => 'Email is required',
+            'password.required' => 'Password is required',
+            'email.email' => 'Email is not valid',
         ]);
  
         if ($validator->fails()) {
