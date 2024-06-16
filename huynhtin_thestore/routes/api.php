@@ -6,6 +6,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductTypeController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\EnsureTokenIsValid;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
