@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+
 use App\Models\User;
 // use UserInterface;
 
@@ -11,19 +16,43 @@ class UserController extends Controller
 {
     public function register(Request $request, User $user){
         $validator = \Validator::make($request->all(), [
-            'title' => 'required|unique:posts|max:255',
-            'body' => 'required',
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'phone' => 'required',
+            'password' => 'required',
+            'role_id' => 'required|exists:roles,id',
+        ],[
+            'name.required' => 'Name is required',
+            'email.required' => 'Email is required',
+            'email.email' => 'Email is not valid',
+            'email.unique' => 'Email is existed',
+            'phone.required' => 'Phone is required',
+            'password.required' => 'Password is required',
+            'role_id.required' => 'Role is required',
+            'role_id.exists' => 'Role is not existed',
         ]);
- 
         if ($validator->fails()) {
             return response()->json(['error'=>$validator->errors()], 401);
         }
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'password' => Hash::make($request->password),
+            'role_id' => $request->role_id,
+        ]);
+        return response()->json(['check'=>true,'msg'=>'Register success']);
+    
     }
     public function getUsers()
     {
         $users = \DB::table('users')->where('status',1)->get();
         return response()->json($users);
         // return "User Controller use Interface UserInterface";
+    }
+    public function logout(){
+        Auth::logout();
+        return response()->json(['check'=>true,'msg'=>'Logout success']);
     }
     public function login(Request $request, User $user){
         $validator = \Validator::make($request->all(), [
@@ -34,22 +63,11 @@ class UserController extends Controller
             'password.required' => 'Password is required',
             'email.email' => 'Email is not valid',
         ]);
- 
-        if ($validator->fails()) {
-            return response()->json(['error'=>$validator->errors()], 401);
-            }
-
-        $user = User::where('email', $request->email)->first();
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json(['message' => 'Login failed'], 401);
+        if(Auth::attempt(['email' => $request->email, 'password' =>  $request->password,'status'=>1],true)){
+            return response()->json(['check'=>true,'token'=>Auth::user()->remember_token]);
+        }else{
+            return response()->json(['check'=>false,'msg'=>'Tài khoàn đăng nhập không hợp lệ']);
         }
-        $token = $user->createToken('my-app-token')->plainTextToken;
-        $response = [
-            'user' => $user,
-            'token' => $token
-        ];
-        return response()->json($response);
-        
     }
     /**
      * Display a listing of the resource.

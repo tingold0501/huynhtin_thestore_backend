@@ -11,7 +11,7 @@ abstract class Controller
      */
     public function __construct()
     {
-        echo("Controller already created");
+        // echo("Controller already created");
     }
 
     
